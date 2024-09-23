@@ -8,11 +8,15 @@
 <body>
     <h1>Simulación de Sobreventa de Boletos</h1>
     <form action="/simulate" method="post">
-        <label for="reservations">Número de Reservaciones:</label>
-        <input type="number" id="reservations" name="reservations" value="43" required><br><br>
-        
-        <label for="capacity">Capacidad del avión:</label>
-        <input type="number" id="capacity" name="capacity" value="40" required><br><br>
+        <label for="N">Cantidad de simulaciones:</label>
+        <input type="number" id="N" name="N" value="1" required><br><br>
+
+
+        <label for="utility_per_passanger">Utilidad por pasajero:</label>
+        <input type="number" id="utility_per_passanger" name="utility_per_passanger" value="100" required><br><br>
+
+        <label for="strategy">Estrategia de sobreventa:</label>
+        <input type="number" id="strategy" name="strategy" value="43" required><br><br>
         
         <button type="submit">Simular</button>
     </form>
