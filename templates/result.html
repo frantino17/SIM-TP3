@@ -1,13 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado de la Simulación</title>
+    <title>Resultado de la Simulación - Sobreventa de Pasajes Aéreos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1, h2, h3 {
+            color: #4CAF50;
+        }
+        .center {
+            text-align: center;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .results {
+            margin-bottom: 40px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
+
     <h1>Resultado de la Simulación</h1>
-    <p>La utilidad promedio por vuelo es: {{ average_utility }}</p>
+
+    <div class="results">
+        <h2>Datos generales</h2>
+        <p><span class="bold">Utilidad promedio por vuelo:</span> ${{ average_utility }}</p>
+        <p><span class="bold">Costo promedio por sobreventa:</span> ${{ average_overbooking_cost }}</p>
+    </div>
+
+    <div class="results">
+        <h2>Iteraciones solicitadas</h2>
+        <p><span class="bold">Iteraciones mostradas desde la hora:</span> {{ start_hour }}</p>
+        <p><span class="bold">Número de iteraciones mostradas (i):</span> {{ iterations }}</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Fila</th>
+                    <th>Reservas aceptadas</th>
+                    <th>Pasajeros presentados</th>
+                    <th>Utilidad</th>
+                    <th>Costo por sobreventa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in displayed_rows %}
+                <tr>
+                    <td>{{ row.index }}</td>
+                    <td>{{ row.accepted_reservations }}</td>
+                    <td>{{ row.passengers_presented }}</td>
+                    <td>${{ row.utility }}</td>
+                    <td>${{ row.overbooking_cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="results">
+        <h2>Última fila simulada (N)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fila</th>
+                    <th>Reservas aceptadas</th>
+                    <th>Pasajeros presentados</th>
+                    <th>Utilidad</th>
+                    <th>Costo por sobreventa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ last_row.index }}</td>
+                    <td>{{ last_row.accepted_reservations }}</td>
+                    <td>{{ last_row.passengers_presented }}</td>
+                    <td>${{ last_row.utility }}</td>
+                    <td>${{ last_row.overbooking_cost }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="results">
+        <h2>Resumen de la simulación</h2>
+        <p><span class="bold">Número total de filas simuladas (N):</span> {{ total_rows }}</p>
+        <p><span class="bold">Utilidad acumulada:</span> ${{ total_utility }}</p>
+        <p><span class="bold">Costo total por sobreventa:</span> ${{ total_overbooking_cost }}</p>
+    </div>
+
     <a href="/">Realizar otra simulación</a>
+
 </body>
 </html>

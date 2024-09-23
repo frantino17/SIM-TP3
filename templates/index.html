@@ -1,19 +1,175 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación Monte Carlo</title>
+    <title>Simulación Monte Carlo - Sobreventa de Pasajes Aéreos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: inline-block;
+            width: 300px;
+            margin-top: 10px;
+        }
+        input, select {
+            padding: 5px;
+            margin-bottom: 10px;
+            width: 150px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .probability-input {
+            display: flex;
+            align-items: center;
+        }
+        .probability-input label {
+            width: 350px;
+        }
+        h3 {
+            color: #333;
+        }
+        .info {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Simulación de Sobreventa de Boletos</h1>
-    <form action="/simulate" method="post">
-        <label for="reservations">Número de Reservaciones:</label>
-        <input type="number" id="reservations" name="reservations" value="43" required><br><br>
-        
-        <label for="capacity">Capacidad del avión:</label>
-        <input type="number" id="capacity" name="capacity" value="40" required><br><br>
-        
+    <h1>Simulación de Sobreventa de Pasajes Aéreos</h1>
+
+    <form action="/" method="post">
+        <!-- Simular *X* tiempo -->
+        <label for="simulation_time">Tiempo de simulación (X) en segundos:</label>
+        <input type="number" id="simulation_time" name="simulation_time" value="10000" min="1" max="1000000" required><br>
+        <span class="info">Duración de la simulación (máximo 1,000,000 segundos)</span><br>
+
+        <!-- *N* cantidad de filas -->
+        <label for="num_rows">Cantidad de filas a generar (N):</label>
+        <input type="number" id="num_rows" name="num_rows" value="100000" min="1" max="100000" required><br>
+        <span class="info">Número total de filas simuladas (máximo 100,000)</span><br>
+
+        <!-- *i* iteraciones a partir de una hora *j* -->
+        <label for="iterations">Número de iteraciones a partir de la hora (i):</label>
+        <input type="number" id="iterations" name="iterations" value="10" min="1" required><br>
+
+        <label for="start_hour">Hora de inicio (j):</label>
+        <input type="number" id="start_hour" name="start_hour" value="1" min="1" required><br>
+
+        <!-- Parámetros de utilidad -->
+        <label for="revenue_per_passenger">Utilidad por pasajero ($):</label>
+        <input type="number" id="revenue_per_passenger" name="revenue_per_passenger" value="100" min="1" required><br>
+
+        <label for="overbooking_cost">Costo por sobreventa ($):</label>
+        <input type="number" id="overbooking_cost" name="overbooking_cost" value="150" min="1" required><br>
+
+        <!-- Probabilidades para diferentes niveles de reservaciones -->
+        <h3>Probabilidades para 42 reservaciones (pasajeros que se presentan):</h3>
+        <div class="probability-input">
+            <label for="prob_42_38">38 pasajeros:</label>
+            <input type="number" id="prob_42_38" name="prob_42_38" step="0.01" value="0.10" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_39">39 pasajeros:</label>
+            <input type="number" id="prob_42_39" name="prob_42_39" step="0.01" value="0.25" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_40">40 pasajeros:</label>
+            <input type="number" id="prob_42_40" name="prob_42_40" step="0.01" value="0.40" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_41">41 pasajeros:</label>
+            <input type="number" id="prob_42_41" name="prob_42_41" step="0.01" value="0.15" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_42">42 pasajeros:</label>
+            <input type="number" id="prob_42_42" name="prob_42_42" step="0.01" value="0.10" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_43">43 pasajeros:</label>
+            <input type="number" id="prob_42_43" name="prob_42_43" step="0.01" value="0.00" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_42_44">44 pasajeros:</label>
+            <input type="number" id="prob_42_44" name="prob_42_44" step="0.01" value="0.00" min="0" max="1" required>
+        </div>
+
+        <h3>Probabilidades para 43 reservaciones (Pasajeros que se presentan):</h3>
+        <div class="probability-input">
+            <label for="prob_43_38">38 pasajeros:</label>
+            <input type="number" id="prob_43_38" name="prob_43_38" step="0.01" value="0.05" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_39">39 pasajeros:</label>
+            <input type="number" id="prob_43_39" name="prob_43_39" step="0.01" value="0.25" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_40">40 pasajeros:</label>
+            <input type="number" id="prob_43_40" name="prob_43_40" step="0.01" value="0.45" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_41">41 pasajeros:</label>
+            <input type="number" id="prob_43_41" name="prob_43_41" step="0.01" value="0.15" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_42">42 pasajeros:</label>
+            <input type="number" id="prob_43_42" name="prob_43_42" step="0.01" value="0.05" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_43">43 pasajeros:</label>
+            <input type="number" id="prob_43_43" name="prob_43_43" step="0.01" value="0.05" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_43_44">44 pasajeros:</label>
+            <input type="number" id="prob_43_44" name="prob_43_44" step="0.01" value="0.00"  min="0" max="1"required>
+        </div>
+
+        <h3>Probabilidades para 44 reservaciones (Pasajeros que se presentan):</h3>
+        <div class="probability-input">
+            <label for="prob_44_38">38 pasajeros:</label>
+            <input type="number" id="prob_44_38" name="prob_44_38" step="0.01" value="0.00" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_39">39 pasajeros:</label>
+            <input type="number" id="prob_44_39" name="prob_44_39" step="0.01" value="0.05" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_40">40 pasajeros:</label>
+            <input type="number" id="prob_44_40" name="prob_44_40" step="0.01" value="0.20" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_41">41 pasajeros:</label>
+            <input type="number" id="prob_44_41" name="prob_44_41" step="0.01" value="0.45" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_42">42 pasajeros:</label>
+            <input type="number" id="prob_44_42" name="prob_44_42" step="0.01" value="0.15" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_43">43 pasajeros:</label>
+            <input type="number" id="prob_44_43" name="prob_44_43" step="0.01" value="0.15" min="0" max="1" required>
+        </div>
+        <div class="probability-input">
+            <label for="prob_44_44">44 pasajeros:</label>
+            <input type="number" id="prob_44_44" name="prob_44_44" step="0.01" value="0.00" min="0" max="1" required>
+        </div>
+
         <button type="submit">Simular</button>
     </form>
 </body>
