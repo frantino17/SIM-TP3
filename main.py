@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request 
 import random
-
+import os
+import json
 app = Flask(__name__)
 
 # Definir las probabilidades en función de la estrategia
@@ -95,6 +96,31 @@ def montecarlo_simulation(simulation_size, probabilities_strategy, utility_per_p
     # Devolver el vector con todas las simulaciones
     return vector
 
+
+def save_utility_simulation(size, strategy, utility, total_utility):
+    avg_utility = total_utility / size
+    simulation_data = {
+        "size": size,
+        "strategy": strategy,
+        "utility_per_passenger": utility,
+        "average_utility": avg_utility
+    }    
+    file_path = os.path.join(os.getcwd(), 'resultados.json')
+    
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as json_file:
+            try:
+                existing_data = json.load(json_file) 
+            except json.JSONDecodeError:
+                existing_data = []  
+    else:
+        existing_data = []  
+
+    existing_data.append(simulation_data)
+  
+    with open(file_path, 'w') as json_file:
+        json.dump(existing_data, json_file, indent=4)
+
 # Ruta principal
 @app.route('/')
 def index():
@@ -105,14 +131,19 @@ def index():
 def simulate():
     # Obtener los parámetros de la forma
     N = int(request.form['N'])
+    from_ = int(request.form['A'])
+    to = int(request.form['B'])
     strategy = int(request.form['strategy'])
     utility_per_passenger = int(request.form['utility_per_passanger'])
 
     # Realizar la simulación
     vector = montecarlo_simulation(N, strategy, utility_per_passenger)
-    
+    # Filtras el array para mostrar solo las filas que se piden en el form
+    sliced_vector = vector[from_:to:1]
+
+    save_utility_simulation(N,strategy,utility_per_passenger, vector[-1]["total_utility"])
     # Mostrar la última fila de la simulación
-    return render_template('result.html', last_row=vector[-1], full_vector=vector)
+    return render_template('result.html', last_row=vector[-1], full_vector=sliced_vector,strategy = strategy, size= N)
 
 # Iniciar el servidor Flask
 if __name__ == '__main__':

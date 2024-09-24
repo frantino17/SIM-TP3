@@ -9,6 +9,7 @@
 <body>
     <div class="container mt-5">
         <h2>Resultados de la Simulación</h2>
+        <h4>Se utilizó la estrategia de sobreventa de {{strategy}} pasajeros</h4>
         <br>
         <h3>Última Simulación</h3>
         <table class="table table-bordered">
@@ -16,7 +17,7 @@
                 <tr>
                     <th>Número de Vuelo</th>
                     <th>Número Random</th>
-                    <th>Estrategia Random</th>
+                    <th>Cant pasajeros Random</th>
                     <th>Pasajeros Admitidos</th>
                     <th>Pasajeros Negados</th>
                     <th>Utilidad</th>
@@ -38,6 +39,10 @@
             </tbody>
         </table>
 
+        <div>
+            <span>La utilidad promedio de esta simulación fue de: ${{last_row.total_utility / size}}</span>
+        </div>
+
         <a href="/">Realizar otra simulación</a>
 
         <!-- Mostrar todos los resultados de la simulación -->
@@ -47,7 +52,7 @@
                 <tr>
                     <th>Número de Vuelo</th>
                     <th>Número Random</th>
-                    <th>Estrategia Random</th>
+                    <th>Cant pasajeros Random</th>
                     <th>Pasajeros Admitidos</th>
                     <th>Pasajeros Negados</th>
                     <th>Utilidad</th>
