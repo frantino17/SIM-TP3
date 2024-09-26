@@ -5,35 +5,36 @@ import json
 app = Flask(__name__)
 
 # Definir las probabilidades en función de la estrategia
-def define_probabilities(n):
+def define_probabilities(n,prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44):
     if n == 42:
         probabilities = {
-            38: 0.10,
-            39: 0.25,
-            40: 0.40,
-            41: 0.15,
-            42: 0.10,
+            38: prob_38,
+            39: prob_39,
+            40: prob_40,
+            41: prob_41,
+            42: prob_42
         }
         return probabilities
     if n == 43:
         probabilities = {
-            38: 0.05,
-            39: 0.25,
-            40: 0.45,
-            41: 0.15,
-            42: 0.05,
-            43: 0.05
+            38: prob_38,
+            39: prob_39,
+            40: prob_40,
+            41: prob_41,
+            42: prob_42,
+            43: prob_43
         }
+        
         return probabilities
     if n == 44:
         probabilities = {
-            38: 0,
-            39: 0.05,
-            40: 0.20,
-            41: 0.45,
-            42: 0.15,
-            43: 0.05,
-            44: 0.1
+            38: prob_38,
+            39: prob_39,
+            40: prob_40,
+            41: prob_41,
+            42: prob_42,
+            43: prob_43,
+            44: prob_44
         }
         return probabilities
     return ValueError("La estrategia elegida debe estar entre los valores")
@@ -49,9 +50,9 @@ def get_strategy(random_value, probabilities):
 
 
 # Función que realiza la simulación de Monte Carlo
-def montecarlo_simulation(simulation_size, probabilities_strategy, utility_per_passenger):
+def montecarlo_simulation(simulation_size, probabilities_strategy, utility_per_passenger, prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44):
     # Definir probabilidades basadas en el problema
-    probabilities = define_probabilities(probabilities_strategy)
+    probabilities = define_probabilities(probabilities_strategy, prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44)
     
     # Parámetros de utilidad
     overbooking_cost = 150
@@ -97,13 +98,14 @@ def montecarlo_simulation(simulation_size, probabilities_strategy, utility_per_p
     return vector
 
 
-def save_utility_simulation(size, strategy, utility, total_utility):
+def save_utility_simulation(size, strategy, utility, total_utility, probabilidades):
     avg_utility = total_utility / size
     simulation_data = {
         "size": size,
         "strategy": strategy,
         "utility_per_passenger": utility,
-        "average_utility": avg_utility
+        "average_utility": avg_utility,
+        "probabilidades": probabilidades
     }    
     file_path = os.path.join(os.getcwd(), 'resultados.json')
     
@@ -134,14 +136,25 @@ def simulate():
     from_ = int(request.form['A'])
     to = int(request.form['B'])
     strategy = int(request.form['strategy'])
-    utility_per_passenger = int(request.form['utility_per_passanger'])
+    utility_per_passenger = float(request.form['utility_per_passanger'])
+
+
+    prob_38 = float(request.form['prob_38'])
+    prob_39 = float(request.form['prob_39'])
+    prob_40 = float(request.form['prob_40'])
+    prob_41 = float(request.form['prob_41'])
+    prob_42 = float(request.form['prob_42'])
+    prob_43 = float(request.form['prob_43'])
+    prob_44 = float(request.form['prob_44'])
+    # Definir las probabilidades usando los valores ingresados
+    probabilidad = [prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44]
 
     # Realizar la simulación
-    vector = montecarlo_simulation(N, strategy, utility_per_passenger)
+    vector = montecarlo_simulation(N, strategy, utility_per_passenger, prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44)
     # Filtras el array para mostrar solo las filas que se piden en el form
-    sliced_vector = vector[from_:to:1]
+    sliced_vector = vector[from_-1:to:1]
 
-    save_utility_simulation(N,strategy,utility_per_passenger, vector[-1]["total_utility"])
+    save_utility_simulation(N,strategy,utility_per_passenger, vector[-1]["total_utility"], probabilidad)
     # Mostrar la última fila de la simulación
     return render_template('result.html', last_row=vector[-1], full_vector=sliced_vector,strategy = strategy, size= N)
 

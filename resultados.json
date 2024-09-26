@@ -1,0 +1,107 @@
+[
+    {
+        "size": 100000,
+        "strategy": 42,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3912.9515,
+        "probabilidades": [
+            0.05,
+            0.25,
+            0.45,
+            0.15,
+            0.1,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "size": 100000,
+        "strategy": 42,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3940.096,
+        "probabilidades": [
+            0.05,
+            0.5,
+            0.45,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "size": 100,
+        "strategy": 42,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3965.0,
+        "probabilidades": [
+            0.05,
+            0.05,
+            0.8,
+            0.1,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "size": 1000000,
+        "strategy": 42,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3990.50415,
+        "probabilidades": [
+            0.04,
+            0.0,
+            0.95,
+            0.01,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "size": 1000000,
+        "strategy": 42,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3997.005,
+        "probabilidades": [
+            0.01,
+            0.01,
+            0.98,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "size": 100000,
+        "strategy": 44,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3423.987,
+        "probabilidades": [
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.94
+        ]
+    },
+    {
+        "size": 100000,
+        "strategy": 44,
+        "utility_per_passenger": 100.0,
+        "average_utility": 3838.0115,
+        "probabilidades": [
+            0.01,
+            0.01,
+            0.01,
+            0.93,
+            0.01,
+            0.01,
+            0.02
+        ]
+    }
+]

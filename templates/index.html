@@ -45,53 +45,66 @@
             let A = document.getElementById("A").value;
             let B = document.getElementById("B").value;
             let utilityPerPassanger = document.getElementById("utility_per_passanger").value;
+
             let strategy = document.getElementById("strategy").value;
 
-            // Convert inputs to numbers
-            N = Number(N);
-            A = Number(A);
-            B = Number(B);
-            utilityPerPassanger = Number(utilityPerPassanger);
-            strategy = Number(strategy);
+            // Obtener todas las probabilidades
+            let prob_38 = parseFloat(document.getElementById("prob_38").value);
+            let prob_39 = parseFloat(document.getElementById("prob_39").value);
+            let prob_40 = parseFloat(document.getElementById("prob_40").value);
+            let prob_41 = parseFloat(document.getElementById("prob_41").value);
+            let prob_42 = parseFloat(document.getElementById("prob_42").value);
+            let prob_43 = parseFloat(document.getElementById("prob_43").value);
+            let prob_44 = parseFloat(document.getElementById("prob_44").value);
 
-            // Validar que todos los campos sean números
-            if (isNaN(N) || isNaN(A) || isNaN(B) || isNaN(utilityPerPassanger) || isNaN(strategy)) {
-                alert("Todos los campos deben contener solo números.");
+            let total_prob = prob_38 + prob_39 + prob_40 + prob_41 + prob_42 + prob_43 + prob_44;
+
+
+            let probabilities = [prob_38, prob_39, prob_40, prob_41, prob_42, prob_43, prob_44];
+            for (let i = 0; i < probabilities.length; i++) {
+                if (probabilities[i] < 0 ) {
+                    alert("Todas las probabilidades deben ser positivas");
+                    return false;
+                }
+            }
+            
+            // Validar que todas las probabilidades sumen 1
+            if (total_prob !== 1) {
+                alert("Las probabilidades deben sumar 1.");
                 return false;
             }
 
-            // Validación de N: Mayor que 0 y menor que 1 millón
-            if (N <= 0 || N >= 1000000) {
-                alert("La cantidad de simulaciones debe ser mayor que 0 y menor que 1 millón.");
-                return false;
-            }
-
-            // Validación de A: Mayor que 0, menor que N y menor que B
-            if (A <= 0 || A >= N || A >= B) {
-                alert("El campo Desde debe ser mayor que 0, menor que N y menor que B.");
-                return false;
-            }
-
-            // Validación de B: Mayor que 0 y mayor que A
-            if (B <= 0 || B <= A) {
-                alert("El campo Hasta debe ser mayor que 0 y mayor que A.");
-                return false;
-            }
-
-            // Validación de utility per passenger: Mayor que 0
-            if (utilityPerPassanger <= 0) {
-                alert("La utilidad por pasajero debe ser mayor que 0.");
-                return false;
-            }
-
-            // Validación de strategy: Solo puede ser 42, 43 o 44
-            if (strategy !== 42 && strategy !== 43 && strategy !== 44) {
-                alert("La estrategia solo permite los valores 42, 43 o 44.");
-                return false;
-            }
-
-            // Si todas las validaciones pasan, permitir el envío del formulario
             return true;
+        }
+
+        // Función para deshabilitar campos según la estrategia seleccionada
+        function handleStrategyChange() {
+    let strategy = document.getElementById("strategy").value;
+    let prob43Field = document.getElementById("prob_43");
+    let prob44Field = document.getElementById("prob_44");
+
+    if (strategy == "42") {
+        // Hacer los campos solo de lectura en lugar de deshabilitarlos
+        prob43Field.value = "0.00";
+        prob43Field.readOnly = true;
+        prob44Field.value = "0.00";
+        prob44Field.readOnly = true;
+    } else if (strategy == "43") {
+        prob43Field.readOnly = false;
+        prob44Field.value = "0.00";
+        prob44Field.readOnly = true;
+    } else {
+        // Habilitar ambos campos
+        prob43Field.readOnly = false;
+        prob44Field.readOnly = false;
+    }
+}
+
+        window.onload = function() {
+            // Añadir evento al cargar la página
+            document.getElementById("strategy").addEventListener("change", handleStrategyChange);
+            // Ejecutar la función inicialmente para establecer el estado correcto
+            handleStrategyChange();
         }
     </script>
 </head>
@@ -112,11 +125,33 @@
 
         <label for="strategy">Estrategia de sobreventa:</label>
         <select id="strategy" name="strategy" required>
-            <option value="42">42</option>
-            <option value="43" selected>43</option>
+            <option value="42" selected>42</option>
+            <option value="43">43</option>
             <option value="44">44</option>
         </select>
-        
+
+        <!-- Campos para las probabilidades -->
+        <label for="prob_38">Probabilidad para 38 pasajeros:</label>
+        <input type="number" step="any" id="prob_38" name="prob_38" value="0.05" required>
+
+        <label for="prob_39">Probabilidad para 39 pasajeros:</label>
+        <input type="number" step="any" id="prob_39" name="prob_39" value="0.25" required>
+
+        <label for="prob_40">Probabilidad para 40 pasajeros:</label>
+        <input type="number" step="any" id="prob_40" name="prob_40" value="0.45" required>
+
+        <label for="prob_41">Probabilidad para 41 pasajeros:</label>
+        <input type="number" step="any" id="prob_41" name="prob_41" value="0.15" required>
+
+        <label for="prob_42">Probabilidad para 42 pasajeros:</label>
+        <input type="number" step="any" id="prob_42" name="prob_42" value="0.10" required>
+
+        <label for="prob_43">Probabilidad para 43 pasajeros:</label>
+        <input type="number" step="any" id="prob_43" name="prob_43" value="0.00" required>
+
+        <label for="prob_44">Probabilidad para 44 pasajeros:</label>
+        <input type="number" step="any" id="prob_44" name="prob_44" value="0.00" required>
+
         <button type="submit">Simular</button>
     </form>
 </body>

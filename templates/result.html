@@ -9,8 +9,12 @@
 <body>
     <div class="container mt-5">
         <h2>Resultados de la Simulación</h2>
-        <h4>Se utilizó la estrategia de sobreventa de {{strategy}} pasajeros</h4>
+        
+        <!-- Mostrar la estrategia utilizada en la simulación -->
+        <h4>Se utilizó la estrategia de sobreventa para {{strategy}} pasajeros</h4>
         <br>
+        
+        <!-- Mostrar la última simulación -->
         <h3>Última Simulación</h3>
         <table class="table table-bordered">
             <thead class="table-dark">
@@ -39,14 +43,16 @@
             </tbody>
         </table>
 
+        <!-- Mostrar la utilidad promedio -->
         <div>
-            <span>La utilidad promedio de esta simulación fue de: ${{last_row.total_utility / size}}</span>
+            <span>La utilidad promedio de esta simulación fue de: ${{ "%.2f" % (last_row.total_utility / size) }}</span>
         </div>
 
-        <a href="/">Realizar otra simulación</a>
+        <!-- Botón para realizar otra simulación -->
+        <a href="/" class="btn btn-primary mt-3">Realizar otra simulación</a>
 
         <!-- Mostrar todos los resultados de la simulación -->
-        <h3>Historial de Simulaciones</h3>
+        <h3 class="mt-5">Historial de Simulaciones</h3>
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
